@@ -1,0 +1,63 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version "2.7.3"
+    id 'io.spring.dependency-management' version "1.0.12.RELEASE"
+    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+}
+
+group 'com.saltedge.provider.demo'
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.6.10'
+    implementation 'org.jetbrains.kotlin:kotlin-reflect:1.6.10'
+    implementation 'org.jetbrains:annotations:23.0.0'
+
+    def springVersion = '2.7.3'
+    def jjwtVersion = '0.11.5'
+    implementation "org.springframework.boot:spring-boot-starter:$springVersion"
+    implementation "org.springframework.boot:spring-boot-starter-web:$springVersion"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:$springVersion"
+    implementation "org.springframework.boot:spring-boot-starter-validation:$springVersion"
+    implementation "org.springframework.boot:spring-boot-starter-freemarker:$springVersion"
+    implementation 'com.h2database:h2:2.1.214'
+
+    implementation 'com.google.zxing:core:3.5.0'
+    implementation 'com.google.zxing:javase:3.5.0'
+
+    implementation "io.jsonwebtoken:jjwt-api:$jjwtVersion"
+    runtime "io.jsonwebtoken:jjwt-impl:$jjwtVersion", "io.jsonwebtoken:jjwt-jackson:$jjwtVersion"
+    implementation "io.jsonwebtoken:jjwt-impl:$jjwtVersion"
+    implementation "io.jsonwebtoken:jjwt-jackson:$jjwtVersion"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+
+    testImplementation "io.jsonwebtoken:jjwt-api:$jjwtVersion"
+    testImplementation "io.jsonwebtoken:jjwt-jackson:$jjwtVersion"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:$springVersion"
+    testImplementation 'com.h2database:h2:2.1.214'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.saltedge.provider.demo.DemoProviderApplicationKt'
+    }
+}
