@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - gem_cache:/usr/local/bundle/gems
+    links:
+      - db
+      - redis
+    ports:
+      - "4567:4567"
+    command: rackup --host 0.0.0.0 --port 4567 config.ru
+  sidekiq:
+    build: .
+    volumes:
+      - .:/app
+    links:
+      - db
+      - redis
+    command: bundle exec sidekiq -r ./app.rb
+  db:
+    image: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres_password
+  redis:
+    image: redis
+    command: redis-server
+    ports:
+      - '6379:6379'
+    volumes:
+      - redis_data:/var/lib/redis/data
+
+volumes:
+  gem_cache:
+  db_data:
+  redis_data:
