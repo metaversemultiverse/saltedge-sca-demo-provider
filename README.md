@@ -5,9 +5,9 @@ This application is just a Proof Of Concept.
 
 ## Project content
 
-Repository contains next examples of Authenticator Identity Service: 
+Repository contains next examples: 
 * [**Java Example & SDK (Spring Boot framework)**](spring-boot/README.md);
-* [**Ruby example (Sinatra framework)**](sinatra-ruby/README.md);
+* [**Ruby Example (Sinatra framework)**](sinatra-ruby/README.md);
 
 It will help you to implement our solution in your system. 
 
