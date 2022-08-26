@@ -1,0 +1,8 @@
+application.yml
+database.yml
+sidekiq.yml
+dump.rdb
+.DS_Store
+*.sqlite3
+tmp/**
+/.idea/
