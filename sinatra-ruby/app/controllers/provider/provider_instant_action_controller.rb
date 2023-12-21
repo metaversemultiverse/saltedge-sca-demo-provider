@@ -1,8 +1,3 @@
-#
-# @author Daniel Marcenco (danielm@saltedge.com)
-# Copyright (c) 2022 Salt Edge.
-#
-
 class ProviderInstantActionController < BaseController
   # http://localhost:8080/instant_action
   get '/instant_action' do

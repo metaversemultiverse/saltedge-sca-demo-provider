@@ -1,8 +1,3 @@
-#
-# @author Daniel Marcenco (danielm@saltedge.com)
-# Copyright (c) 2022 Salt Edge.
-#
-
 class BadRequest < StandardError; end
 class WrongRequestFormat < BadRequest; end
 

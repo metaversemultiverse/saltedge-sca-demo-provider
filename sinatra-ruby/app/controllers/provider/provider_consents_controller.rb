@@ -1,8 +1,3 @@
-#
-# @author Daniel Marcenco (danielm@saltedge.com)
-# Copyright (c) 2022 Salt Edge.
-#
-
 class ProviderConsentsController < BaseController
   # http://localhost:8080/consents
   get '/consents' do

@@ -1,8 +1,3 @@
-#
-# @author Daniel Marcenco (danielm@saltedge.com)
-# Copyright (c) 2022 Salt Edge.
-#
-
 class UpdateActionWorker < BaseWorker
   sidekiq_options queue: 'sca-demo-sender', retry: false
 

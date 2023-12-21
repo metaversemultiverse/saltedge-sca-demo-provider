@@ -23,14 +23,11 @@
         <!--   Icon Section   -->
         <div class="row">
           <div class="col s12 m4">
-            <a class="match-parent" href="/settings">
-              <div class="icon-block">
-                <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>
-                <h5 class="center black-text">SCA Service settings</h5>
-              </div>
-            </a>
+            <div class="icon-block">
+              <div class="qr-wrapper"><%= @qr %></div>
+              <h5 class="center black-text">Add Authenticator</h5>
+            </div>
           </div>
-
           <div class="col s12 m4">
             <a class="match-parent" href="/connections">
               <div class="icon-block">
@@ -39,14 +36,6 @@
               </div>
             </a>
           </div>
-          <div class="col s12 m4">
-            <div class="icon-block">
-              <div class="qr-wrapper"><%= @qr %></div>
-              <h5 class="center black-text">Add Salt Edge Authenticator</h5>
-            </div>
-          </div>
-        </div>
-        <div class="row">
           <div class="col s12 m4">
             <a class="match-parent" href="/actions">
               <div class="icon-block">
@@ -71,7 +60,6 @@
               </div>
             </a>
           </div>
-        </div>
       </div>
       <br><br>
     </div>

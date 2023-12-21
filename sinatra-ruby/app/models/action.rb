@@ -1,8 +1,3 @@
-#
-# @author Daniel Marcenco (danielm@saltedge.com)
-# Copyright (c) 2022 Salt Edge.
-#
-
 class Action < ActiveRecord::Base
   STATUSES = %w[pending confirm_processing deny_processing confirmed denied closed additional].freeze.each do |name|
     const_set(name.upcase, name)

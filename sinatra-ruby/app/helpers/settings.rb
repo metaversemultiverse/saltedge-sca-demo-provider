@@ -1,8 +1,3 @@
-#
-# @author Daniel Marcenco (danielm@saltedge.com)
-# Copyright (c) 2022 Salt Edge.
-#
-
 require 'sinatra/base'
 
 module SettingsHelper
@@ -11,11 +6,17 @@ module SettingsHelper
   end
 
   def self.sca_public_key
-    File.read(file_path(APP_SETTINGS.sca_public_key))
+    File.read(file_path('sca_public_rsa_production.pem'))
+  end
+
+  def self.app_public_key
+    # NOTE: Generate RSA key
+    File.read(file_path('app_public_rsa_development.pem'))
   end
 
   def self.app_private_key
-    File.read(file_path(APP_SETTINGS.app_private_key))
+    # NOTE: Generate RSA key
+    File.read(file_path('app_private_rsa_development.pem'))
   end
 
   def self.app_url

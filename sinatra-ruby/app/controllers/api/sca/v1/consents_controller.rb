@@ -1,8 +1,3 @@
-#
-# @author Daniel Marcenco (danielm@saltedge.com)
-# Copyright (c) 2022 Salt Edge.
-#
-
 class ConsentsController < ApiBaseController
   namespace '/api/sca/v1/consents' do
     put '/:consent_id/revoke' do

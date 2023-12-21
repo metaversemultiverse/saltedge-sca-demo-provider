@@ -1,12 +1,8 @@
-#
-# @author Daniel Marcenco (danielm@saltedge.com)
-# Copyright (c) 2022 Salt Edge.
-#
-
 class CreateActionWorker < BaseWorker
   sidekiq_options queue: 'sca-demo-sender', retry: false
 
   def perform(params)
+    puts "CreateActionWorker: [#{Time.now}], action_id: #{params['action_id']}"
     action = Action.find_by(id: params['action_id'])
 
     connections = Connection.all.select { |c| c.authorized? && !c.revoked? }
@@ -31,6 +27,8 @@ class CreateActionWorker < BaseWorker
 
     action.update!(authorizations: action_authorizations.to_json)
 
+    puts "sendActionCreateCallback: #{Time.now}, action_id: #{action.id}"
+
     payload = {
       data: {
         action_id: action.code,
@@ -43,9 +41,7 @@ class CreateActionWorker < BaseWorker
     }
 
     url = "#{SettingsHelper.sca_service_url}/api/sca/v1/actions"
-
-    do_callback_request(:post, url, payload)
-
-    puts "sendActionCreateCallback: #{Time.now}, action_id: #{action.id}"
+    result = do_callback_request(:post, url, payload)
+    puts "callback result: #{result}"
   end
 end

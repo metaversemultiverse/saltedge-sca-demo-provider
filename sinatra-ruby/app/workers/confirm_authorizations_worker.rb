@@ -1,8 +1,3 @@
-#
-# @author Daniel Marcenco (danielm@saltedge.com)
-# Copyright (c) 2022 Salt Edge.
-#
-
 class ConfirmAuthorizationsWorker < BaseWorker
   sidekiq_options queue: 'sca-demo-sender', retry: false
 
@@ -11,7 +6,7 @@ class ConfirmAuthorizationsWorker < BaseWorker
     authorization_code = params['authorization_code']
     is_confirm         = params['is_confirm']
 
-    action = Action.find_by(id: action_id)
+    action = Action.find_by(id: action_id) || Action.find_by(code: action_id)
     return unless action
 
     authorizations = action.parsed_authorizations.each(&:symbolize_keys!)

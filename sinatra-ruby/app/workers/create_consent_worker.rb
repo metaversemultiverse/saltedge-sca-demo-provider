@@ -1,8 +1,3 @@
-#
-# @author Daniel Marcenco (danielm@saltedge.com)
-# Copyright (c) 2022 Salt Edge.
-#
-
 class CreateConsentWorker < BaseWorker
   sidekiq_options queue: 'sca-demo-sender', retry: false
 

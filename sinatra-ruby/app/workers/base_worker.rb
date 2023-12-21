@@ -1,8 +1,3 @@
-#
-# @author Daniel Marcenco (danielm@saltedge.com)
-# Copyright (c) 2022 Salt Edge.
-#
-
 require 'sinatra'
 require 'sidekiq'
 require 'redis'
@@ -19,14 +14,17 @@ class BaseWorker
       'Provider-Id':      SettingsHelper.provider_id,
       'x-jws-signature':  Jws.encode(payload)
     }
+    puts "do_callback_request: url:#{url}"
+    puts "do_callback_request: headers: #{headers}"
+    puts "do_callback_request: payload: #{payload}"
     @response = RestClient::Request.execute(
       method:  method,
       url:     url,
       headers: headers,
       payload: payload.to_json
     )
-    http_code = http_code_from(@response, default: 200)
-    JSON.parse(response)
+    http_code = BaseWorker.http_code_from(@response, default: 200)
+    JSON.parse(@response.body)
   rescue => e
     puts "do_callback_request exception: #{url}, error: #{e.message}"
   end

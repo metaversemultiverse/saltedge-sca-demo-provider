@@ -1,8 +1,3 @@
-#
-# @author Daniel Marcenco (danielm@saltedge.com)
-# Copyright (c) 2022 Salt Edge.
-#
-
 class ScaAuthController < ApiBaseController
   get '/auth' do
     url    = request.url
