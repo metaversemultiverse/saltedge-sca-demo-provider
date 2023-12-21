@@ -1,8 +1,3 @@
-#
-# @author Daniel Marcenco (danielm@saltedge.com)
-# Copyright (c) 2022 Salt Edge.
-#
-
 module ServiceHelper
   SCA_USER_ID = '123'.freeze
 
@@ -41,7 +36,8 @@ module ServiceHelper
 
   # Verifies payload data and creates new Connection in db
   def create_new_connection!
-    request_data = params['data']
+    request_data      = params['data']
+    sca_connection_id = request_data['connection_id']
 
     raise StandardError::BadRequest unless request_data&.values_at(
       'enc_rsa_public_key',
@@ -51,15 +47,15 @@ module ServiceHelper
     decrypted_public_key = Jws.decrypt_public_rsa_key(request_data['enc_rsa_public_key'])
 
     Connection.create(
-      id:         request_data['connection_id'],
-      public_key: decrypted_public_key,
-      return_url: request_data['return_url'],
-      user_id:    SCA_USER_ID
+      sca_connection_id: sca_connection_id,
+      public_key:        decrypted_public_key,
+      return_url:        request_data['return_url'],
+      user_id:           SCA_USER_ID
     )
   end
 
-  def revoke_connection(id)
-    connection = Connection.find_by(id: id, revoked: false)
+  def revoke_connection(sca_connection_id)
+    connection = Connection.find_by(sca_connection_id: sca_connection_id, revoked: false)
     raise StandardError::ConnectionNotFound unless connection
 
     connection.update!(revoked: true)
@@ -75,8 +71,8 @@ module ServiceHelper
     uri.to_s
   end
 
-  def authorize_connection(connection_id, user_id)
-    connection = Connection.find_by(id: connection_id, revoked: false)
+  def authorize_connection(sca_connection_id, user_id)
+    connection = Connection.find_by(sca_connection_id: sca_connection_id, revoked: false)
 
     if user_id != SCA_USER_ID && connection.nil?
       puts 'test'
@@ -85,7 +81,7 @@ module ServiceHelper
       connection.update!(access_token: access_token, user_id: user_id)
 
       AuthenticationWorker.perform_async(
-        sca_connection_id: connection.id,
+        sca_connection_id: connection.sca_connection_id,
         access_token: connection.access_token,
         public_key: connection.public_key
       )

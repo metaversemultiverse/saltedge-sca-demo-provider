@@ -1,8 +1,3 @@
-#
-# @author Daniel Marcenco (danielm@saltedge.com)
-# Copyright (c) 2022 Salt Edge.
-#
-
 require 'json'
 
 module EncryptionTools
@@ -36,7 +31,7 @@ module EncryptionTools
     iv = Jws.random_iv
 
     {
-      connection_id: connection.id,
+      connection_id: connection.sca_connection_id,
       key: Base64.encode64(Jws.encrypt_rsa(key, public_key)),
       iv: Base64.encode64(Jws.encrypt_rsa(iv, public_key)),
       data: Base64.encode64(Jws.aes256_encrypt(key, iv, data))
@@ -68,7 +63,7 @@ module EncryptionTools
     iv = Jws.random_iv
 
     {
-      connection_id: connection.id,
+      connection_id: connection.sca_connection_id,
       expires_at: data[:expires_at],
       key: Base64.encode64(Jws.encrypt_rsa(key, public_key)),
       iv: Base64.encode64(Jws.encrypt_rsa(iv, public_key)),

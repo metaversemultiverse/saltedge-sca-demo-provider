@@ -1,8 +1,3 @@
-#
-# @author Daniel Marcenco (danielm@saltedge.com)
-# Copyright (c) 2022 Salt Edge.
-#
-
 class ConnectionsController < ApiBaseController
   namespace '/api/sca/v1' do
     # CREATE NEW CONNECTION
@@ -14,20 +9,20 @@ class ConnectionsController < ApiBaseController
 
       {
         data: {
-          authentication_url: create_authentication_page_url(new_connection.id, params['data']['connect_query']),
-          connection_id:      new_connection.id
+          authentication_url: create_authentication_page_url(new_connection.sca_connection_id, params['data']['connect_query']),
+          connection_id:      new_connection.sca_connection_id
         }
       }.to_json
     end
 
     put '/connections/:connection_id/revoke' do
-      connection_id = params['connection_id']
+      sca_connection_id = params['connection_id']
 
-      revoke_connection(connection_id)
+      revoke_connection(sca_connection_id)
 
-      { 
+      {
         data: {
-          connection_id: connection_id
+          connection_id: sca_connection_id
         }
       }.to_json
     end

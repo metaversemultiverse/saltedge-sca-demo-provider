@@ -15,6 +15,7 @@
     <div class="nav-wrapper">
       <a id="logo-container" href="/" class="brand-logo" style="padding-left: 12px !important;">Demo Provider</a>
       <ul class="right hide-on-med-and-down">
+        <li><a href="/connections/revoke_all">Revoke all connections</a></li>
         <li><a href="/actions">Actions</a></li>
         <li><a href="/consents">Consents</a></li>
       </ul>
@@ -31,7 +32,7 @@
           <thead>
             <tr>
               <th>ID</th>
-              <th class="center">Connection ID</th>
+              <th class="center">SCA Connection ID</th> 
               <th class="center">Access Token</th>
               <th class="center">Revoke</th>
               <th class="center">Add consent</th>
@@ -42,7 +43,7 @@
           <% @provider_connections.each do |item| %>
             <tr>
               <td><%= item.id %></td>
-              <td class="center"><%= item.id %></td>
+              <td class="center"><%= item.sca_connection_id %></td>
               <td><%= item.access_token %></td>
               <td class="center">
                 <% if item.unauthorized? %>

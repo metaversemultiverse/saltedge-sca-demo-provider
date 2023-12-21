@@ -1,8 +1,3 @@
-#
-# @author Daniel Marcenco (danielm@saltedge.com)
-# Copyright (c) 2022 Salt Edge.
-#
-
 class ProviderActionsController < BaseController
   get '/actions' do
     @provider_actions = Action.all.order(id: :desc)

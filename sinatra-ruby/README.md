@@ -4,6 +4,8 @@
 
 ### Setup
 
+Generate RSA key pair and place public and private keys into `config` folder. Make sure to use correct paths to pem keys in the `SettingsHelper` module.
+
 ```
 cp config/application.example.yml config/application.yml
 cp config/database.example.yml config/database.yml

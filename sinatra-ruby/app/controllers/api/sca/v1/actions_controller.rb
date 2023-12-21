@@ -1,28 +1,21 @@
-#
-# @author Daniel Marcenco (danielm@saltedge.com)
-# Copyright (c) 2022 Salt Edge.
-#
-
 class ActionsController < ApiBaseController
   namespace '/api/sca/v1/actions' do
     post '/:action_id' do
       action = Action.find_by(id: params['action_id'])
-
       raise ActionNotFound unless action
+      raise ActionClosed if action.closed?
 
-      connection_id = params['data']['connection_id']
+      sca_connection_id = params['data']['connection_id']
+      raise BadRequest::WrongRequestFormat unless sca_connection_id
 
-      raise BadRequest::WrongRequestFormat unless connection_id
-
-      connection = Connection.find_by(id: connection_id)
-
+      connection = Connection.find_by(sca_connection_id: sca_connection_id)
       raise ConnectionNotFound unless connection
 
       create_action_payload(action, connection)
     end
 
     put '/:action_id/confirm' do
-      action = Action.find_by(code: params['action_id'])
+      action = Action.find_by(code: params['action_id']) || Action.find_by(id: params['action_id'])
 
       raise ActionNotFound unless action
       raise ActionClosed if action.closed?
@@ -41,7 +34,7 @@ class ActionsController < ApiBaseController
     end
 
     put '/:action_id/deny' do
-      action = Action.find_by(code: params['action_id'])
+      action = Action.find_by(code: params['action_id']) || Action.find_by(id: params['action_id'])
 
       raise ActionNotFound unless action
       raise ActionClosed if action.closed?
@@ -62,7 +55,8 @@ class ActionsController < ApiBaseController
     private
 
     def create_action_payload(action, connection)
-      authorization           = EncryptionTools.create_authorization_data(action)
+      authorization_code      = SecureRandom.hex
+      authorization           = EncryptionTools.create_authorization_data(action, authorization_code)
       encrypted_authorization = EncryptionTools.create_encrypted_action(authorization, connection)
 
       {

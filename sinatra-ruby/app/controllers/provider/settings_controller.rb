@@ -1,8 +1,3 @@
-#
-# @author Daniel Marcenco (danielm@saltedge.com)
-# Copyright (c) 2022 Salt Edge.
-#
-
 class SettingsController < BaseController
   get '/settings' do
     @app_url = SettingsHelper.app_url
