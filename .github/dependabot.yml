@@ -1,0 +1,75 @@
+version: 2
+updates:
+  - package-ecosystem: "*"
+    permissions: "write-all"
+    directory: "/" # Location of package manifests
+    schedule:
+      interval: "daily" name: dependabot-config
+on:
+  push:
+    branches:
+      - main
+      - develop
+  schedule:
+    - cron: '0 0 * * *'
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14'
+      - name: Install dependencies
+        run: npm install
+      - name: Update dependencies
+        run: npm update
+      - name: Commit changes
+        run: git add .
+      - name: Check for outdated dependencies
+        run: npm outdated
+      - name: Create pull request
+        run: |
+          git checkout -b dependabot/npm
+          git commit -m "Update dependencies"
+          git push origin dependabot/npm
+          gh pr create --base main --head dependabot/npm --title "Update dependencies" --body "Automated dependency update by Dependabot"
+          gh pr merge --auto --squash
+
+dependencies:
+  npm:
+    package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'daily'
+    open-pull-requests-limit: 10
+    update-schedule: 'interval'
+    ignore:
+      - name: 'eslint'
+        versions: ['^7.0.0']
+      - name: 'babel'
+        versions: ['^7.0.0']
+      - name: 'webpack'
+        versions: ['^5.0.0']
+    allow:
+      - name: 'express'
+        versions: ['^4.0.0']
+    versioning-strategy: 'auto'
+    pr-labels:
+      - 'dependencies'
+    assignees:
+      - 'dependabot'
+    reviewers:
+      - 'team-member-1'
+      - 'team-member-2'
+    security-updates:
+      allow:
+        - name: 'lodash'
+          versions: ['^4.0.0']
+          severity: 'high'
+        - name: 'axios'
+          versions: ['^0.0.0']
+          severity: 'critical'
+
